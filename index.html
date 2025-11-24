@@ -1,0 +1,1246 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+<meta charset="UTF-8"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<title>Secret Santa App</title> 
+<style> 
+/* -------------------- NEW HEADER STYLES (ADDED) --------------------- */ 
+.main-header { 
+width: 100%; 
+height: 68px; 
+background: white; 
+border-bottom: 1px solid var(--divider-color); 
+padding: 20px 120px; 
+display: flex; 
+align-items: center; 
+gap: 40px; 
+opacity: 1; 
+} 
+.logo { 
+display: flex; 
+align-items: center; 
+} 
+/* -------------------- NEW FOOTER STYLES (ADDED) --------------------- */ 
+.main-footer { 
+width: 100%; 
+height: 61px; 
+background: #192D1E; 
+padding: 20px 120px; 
+display: flex; 
+justify-content: space-between; 
+align-items: center; 
+opacity: 1; 
+} 
+.footer-left, .footer-right { 
+font-family: Nunito; 
+font-weight: 500; 
+font-size: 14px; 
+line-height: 150%; 
+color: #FAFAFA; 
+opacity: 1; 
+white-space: nowrap; 
+} 
+/* -------------------- NEW LANDING PAGE STYLES (ADDED) --------------------- */ 
+.landing-wrapper { 
+background: linear-gradient(#eef7ff, #ffffff); 
+padding: 80px 20px 120px; 
+text-align: center; 
+position: relative; 
+} 
+.landing-wrapper h1 { 
+font-size: 2.6rem; 
+font-weight: 700; 
+color: #222; 
+margin-bottom: 15px; 
+} 
+.landing-wrapper p { 
+font-size: 1.1rem; 
+color: #444; 
+max-width: 600px; 
+margin: 0 auto 30px; 
+position: relative; 
+z-index: 2; 
+} 
+.landing-btn { 
+display: inline-block; 
+background: #265b33; 
+color: white; 
+padding: 14px 34px; 
+border-radius: 40px; 
+font-size: 1.2rem; 
+font-weight: 600; 
+cursor: pointer; 
+text-decoration: none; 
+transition: 0.3s; 
+position: relative; 
+z-index: 2; 
+} 
+.landing-btn:hover { 
+background: #1c4426; 
+} 
+/* Floating decorative cards */ 
+.float-card { 
+position: absolute; 
+background: white; 
+padding: 10px 18px; 
+border-radius: 12px; 
+font-size: 0.9rem; 
+box-shadow: 0 2px 6px rgba(0,0,0,0.15); 
+display: flex; 
+align-items: center; 
+gap: 8px; 
+border: 1px dashed; 
+} 
+.float-card img { 
+width: 22px; 
+} 
+/* Positioning floating elements similar to screenshot */ 
+.fc1 { top: 160px; left: 6%; background: #D5E7D9; border-color: #76977E; } 
+.fc2 { top: 140px; right: 8%; background: #FBEFEF; border-color: #EBADAD; } 
+.fc3 { bottom: 140px; left: 10%; background: #FBEFEF; border-color: #EBADAD; } 
+.fc4 { bottom: 150px; right: 10%; background: #D5E7D9; border-color: #76977E; } 
+/* Snowflake decorations */ 
+.flake { 
+position: absolute; 
+opacity: 0.25; 
+} 
+.f1 { top: 20px; left: 0; width: 120px; } 
+.f2 { top: 30px; right: 0; width: 120px; } 
+.f3 { bottom: 40px; left: 0; width: 140px; } 
+.f4 { bottom: 40px; right: 0; width: 140px; } 
+/* Fireworks dots */ 
+.fw { 
+position: absolute; 
+width: 80px; 
+} 
+.fw1 { top: 20px; left: 45%; } 
+.fw2 { bottom: 20px; left: 50%; } 
+/* New presents image */ 
+.presents-img { 
+position: absolute; 
+width: 87px; 
+height: 87px; 
+left: 45px; 
+top: 50%; 
+transform: translateY(-50%); 
+z-index: 1; 
+} 
+/* New present image */ 
+.present-img { 
+position: absolute; 
+width: 87px; 
+height: 87px; 
+right: 45px; 
+top: 50%; 
+transform: translateY(-50%); 
+z-index: 1; 
+} 
+/* New snowglobe image */ 
+.snowglobe-img { 
+position: absolute; 
+width: 87px; 
+height: 87px; 
+right: 10px; 
+bottom: 10px; 
+} 
+@media (min-width: 768px) { 
+.snowglobe-img { 
+left: calc(50% + 230px); 
+top: calc(50% + 95px); 
+right: auto; 
+bottom: auto; 
+} 
+} 
+/* ----------------- APP PAGE STYLES ----------------- */ 
+.app-page { 
+display: none; 
+min-height: calc(100vh - 129px); /* Висота viewport мінус header і footer */ 
+background: linear-gradient(#eef7ff, #ffffff); 
+padding: 80px 20px 120px; 
+position: relative; 
+} 
+.wrapper { 
+max-width: 900px; 
+margin: 0 auto; 
+background: white; 
+border-radius: 16px; 
+padding: 40px 60px; 
+box-shadow: 0 8px 25px rgba(0,0,0,0.08); 
+position: relative; 
+z-index: 2; 
+} 
+/* Decoration image in top right corner */ 
+.wrapper-decoration { 
+position: absolute; 
+top: -90px; 
+right: -90px; 
+width: 180px; 
+height: 180px; 
+z-index: 3; 
+} 
+/* Progress steps */ 
+.progress-steps { 
+display: flex; 
+justify-content: center; 
+gap: 40px; 
+margin-bottom: 40px; 
+position: relative; 
+z-index: 2; 
+} 
+.step { 
+display: flex; 
+flex-direction: column; 
+align-items: center; 
+gap: 8px; 
+} 
+.step-number { 
+width: 30px; 
+height: 30px; 
+border-radius: 50%; 
+background: #ddd; 
+display: flex; 
+align-items: center; 
+justify-content: center; 
+font-weight: bold; 
+color: #666; 
+} 
+.step.active .step-number { 
+background: #265b33; 
+color: white; 
+} 
+.step-text { 
+font-size: 14px; 
+color: #666; 
+white-space: nowrap; 
+} 
+.step.active .step-text { 
+color: #265b33; 
+font-weight: 600; 
+} 
+h1 { 
+font-size: 32px; 
+font-weight: 700; 
+margin-bottom: 10px; 
+} 
+p.subtitle { 
+color: #555; 
+margin-bottom: 30px; 
+} 
+label { 
+display: block; 
+margin-bottom: 6px; 
+font-weight: 600; 
+} 
+.input, .textarea, .date-input, .budget-input { 
+width: 100%; 
+padding: 12px 14px; 
+border: 1px solid #ccc; 
+border-radius: 8px; 
+font-size: 15px; 
+outline: none; 
+} 
+.textarea { 
+height: 110px; 
+resize: none; 
+} 
+.row { 
+display: flex; 
+gap: 18px; 
+margin-top: 20px; 
+} 
+.half { 
+flex: 1; 
+} 
+.budget-wrapper { 
+display: flex; 
+align-items: center; 
+gap: 10px; 
+} 
+.currency-tag { 
+padding: 12px 16px; 
+background: #f3f3f3; 
+border-radius: 8px; 
+border: 1px solid #ccc; 
+} 
+.phone-wrapper { 
+display: flex; 
+gap: 10px; 
+} 
+.phone-prefix { 
+padding: 12px 16px; 
+background: #f3f3f3; 
+border-radius: 8px; 
+border: 1px solid #ccc; 
+font-size: 15px; 
+} 
+.continue-btn { 
+width: 100%; 
+padding: 16px; 
+margin-top: 30px; 
+background: #ccc; 
+color: #444; 
+border: none; 
+border-radius: 30px; 
+font-size: 17px; 
+cursor: pointer; 
+transition: background-color 0.3s; 
+} 
+.continue-btn.active { 
+background: #2C5134; 
+color: white; 
+cursor: pointer; 
+} 
+.back-link { 
+margin-top: 20px; 
+display: inline-block; 
+color: #3a593f; 
+font-size: 16px; 
+text-decoration: none; 
+} 
+.app-footer { 
+text-align: center; 
+font-size: 14px; 
+color: #444; 
+margin-top: 80px; 
+margin-bottom: 40px; 
+} 
+.app-footer a { 
+color: #000; 
+text-decoration: none; 
+margin: 0 10px; 
+} 
+/* Step 3 specific styles */ 
+.gift-budget { 
+font-size: 16px; 
+font-weight: 600; 
+margin-bottom: 25px; 
+display: flex; 
+align-items: center; 
+gap: 10px; 
+} 
+.gift-budget-icon { 
+width: 30px; 
+height: 32px; 
+} 
+.section { 
+border: 1px solid #d8e5d8; 
+background: #f3faf3; 
+padding: 25px; 
+border-radius: 12px; 
+} 
+.section-title { 
+display: flex; 
+align-items: center; 
+gap: 10px; 
+} 
+.count { 
+font-size: 12px; 
+color: #777; 
+margin-top: 3px; 
+} 
+.add-btn { 
+margin-top: 20px; 
+padding: 10px 18px; 
+border: 2px dashed #777; 
+background: white; 
+border-radius: 10px; 
+cursor: pointer; 
+font-size: 15px; 
+} 
+.add-btn:disabled { 
+opacity: 0.5; 
+cursor: not-allowed; 
+} 
+.option-box { 
+border: 1px solid #ddd; 
+padding: 18px; 
+border-radius: 12px; 
+margin-top: 20px; 
+} 
+.complete-btn { 
+width: 100%; 
+padding: 16px; 
+margin-top: 35px; 
+background: #ccc; 
+color: #444; 
+border: none; 
+border-radius: 30px; 
+font-size: 17px; 
+cursor: pointer; 
+transition: background-color 0.3s; 
+} 
+.complete-btn.active { 
+background: #2C5134; 
+color: white; 
+cursor: pointer; 
+} 
+.wish-item { 
+margin-top: 20px; 
+padding-top: 20px; 
+border-top: 1px dashed #ddd; 
+} 
+.wish-item:first-of-type { 
+margin-top: 0; 
+padding-top: 0; 
+border-top: none; 
+} 
+/* Step 4 specific styles */ 
+.section { 
+margin-bottom: 28px; 
+} 
+.note-box { 
+background: #f6faf6; 
+border-radius: 10px; 
+padding: 18px; 
+border: 1px solid #d9e3d5; 
+font-size: 15px; 
+line-height: 1.5; 
+} 
+.button { 
+width: 100%; 
+background: #1c5931; 
+padding: 14px; 
+border-radius: 10px; 
+text-align: center; 
+color: white; 
+font-size: 16px; 
+cursor: pointer; 
+border: none; 
+margin-top: 14px; 
+} 
+.button:hover { 
+background: #164a28; 
+} 
+/* Snowflake decorations for app page */ 
+.app-flake { 
+position: absolute; 
+opacity: 0.25; 
+} 
+.app-f1 { top: 20px; left: 0; width: 120px; } 
+.app-f2 { top: 30px; right: 0; width: 120px; } 
+.app-f3 { bottom: 40px; left: 0; width: 140px; } 
+.app-f4 { bottom: 40px; right: 0; width: 140px; } 
+/* Fireworks dots for app page */ 
+.app-fw { 
+position: absolute; 
+width: 80px; 
+} 
+.app-fw1 { top: 20px; left: 45%; } 
+.app-fw2 { bottom: 20px; left: 50%; } 
+/* New presents image for app page */ 
+.app-presents-img { 
+position: absolute; 
+width: 87px; 
+height: 87px; 
+left: 45px; 
+top: 50%; 
+transform: translateY(-50%); 
+z-index: 1; 
+} 
+/* New present image for app page */ 
+.app-present-img { 
+position: absolute; 
+width: 87px; 
+height: 87px; 
+right: 45px; 
+top: 50%; 
+transform: translateY(-50%); 
+z-index: 1; 
+} 
+/* New snowglobe image for app page */ 
+.app-snowglobe-img { 
+position: absolute; 
+width: 87px; 
+height: 87px; 
+right: 10px; 
+bottom: 10px; 
+} 
+@media (min-width: 768px) { 
+.app-snowglobe-img { 
+left: calc(50% + 230px); 
+top: calc(50% + 95px); 
+right: auto; 
+bottom: auto; 
+} 
+} 
+/* ---------------- COPY BUTTON STYLES ---------------- */ 
+.copy-input-wrapper { 
+position: relative; 
+display: flex; 
+align-items: center; 
+} 
+.copy-input-wrapper .input { 
+padding-right: 50px; 
+} 
+.copy-btn { 
+position: absolute; 
+right: 8px; 
+background: none; 
+border: none; 
+cursor: pointer; 
+padding: 6px; 
+border-radius: 4px; 
+display: flex; 
+align-items: center; 
+justify-content: center; 
+transition: background-color 0.2s; 
+} 
+.copy-btn:hover { 
+background-color: #f0f0f0; 
+} 
+.copy-btn svg { 
+width: 18px; 
+height: 18px; 
+fill: #666; 
+} 
+.copy-btn.copied svg { 
+fill: #2C5134; 
+} 
+.copy-tooltip { 
+position: absolute; 
+bottom: 100%; 
+right: 0; 
+background: #2C5134; 
+color: white; 
+padding: 4px 8px; 
+border-radius: 4px; 
+font-size: 12px; 
+margin-bottom: 5px; 
+white-space: nowrap; 
+opacity: 0; 
+transition: opacity 0.3s; 
+pointer-events: none; 
+} 
+.copy-btn:hover .copy-tooltip { 
+opacity: 1; 
+} 
+/* ---------------- ADMIN TOGGLE STYLES ---------------- */ 
+.admin-toggle { 
+display: flex; 
+align-items: center; 
+gap: 10px; 
+margin-top: 20px; 
+padding: 15px; 
+border: 1px solid #d8e5d8; 
+background: #f3faf3; 
+border-radius: 12px; 
+cursor: pointer; 
+} 
+.admin-toggle-text { 
+font-weight: 600; 
+color: #265b33; 
+} 
+.admin-toggle-circle { 
+width: 20px; 
+height: 20px; 
+border-radius: 50%; 
+border: 2px solid #265b33; 
+position: relative; 
+transition: background-color 0.3s; 
+} 
+.admin-toggle-circle.active { 
+background-color: #265b33; 
+} 
+.admin-toggle-circle.active::after { 
+content: ''; 
+position: absolute; 
+top: 4px; 
+left: 4px; 
+width: 8px; 
+height: 8px; 
+background-color: white; 
+border-radius: 50%; 
+} 
+.admin-password-section { 
+display: none; 
+margin-top: 15px; 
+padding: 15px; 
+border: 1px solid #d8e5d8; 
+background: #f9fdf9; 
+border-radius: 12px; 
+} 
+.admin-password-section.active { 
+display: block; 
+} 
+.admin-password-input { 
+width: 100%; 
+padding: 12px 14px; 
+border: 1px solid #ccc; 
+border-radius: 8px; 
+font-size: 15px; 
+outline: none; 
+margin-bottom: 10px; 
+} 
+.admin-password-btn { 
+padding: 10px 20px; 
+background: #265b33; 
+color: white; 
+border: none; 
+border-radius: 8px; 
+cursor: pointer; 
+font-size: 15px; 
+} 
+.admin-password-btn:hover { 
+background: #1c4426; 
+} 
+.admin-password-error { 
+color: #d32f2f; 
+font-size: 14px; 
+margin-top: 8px; 
+display: none; 
+} 
+/* Mobile-specific adjustments for header and footer */ 
+@media (max-width: 768px) { 
+.main-header { 
+padding: 20px; 
+height: 60px; 
+} 
+.main-footer { 
+padding: 20px; 
+height: auto; 
+flex-direction: column; 
+gap: 10px; 
+text-align: center; 
+} 
+.footer-left, .footer-right { 
+white-space: normal; 
+} 
+.float-card { 
+display: none; /* Hide floating cards on mobile */ 
+} 
+.presents-img, 
+.present-img, 
+.snowglobe-img, 
+.app-presents-img, 
+.app-present-img, 
+.app-snowglobe-img { 
+width: 60px; 
+height: 60px; 
+} 
+.flake, 
+.app-flake { 
+width: 80px; 
+} 
+.fw, 
+.app-fw { 
+width: 60px; 
+} 
+} 
+/* ---------------- YOUR ORIGINAL STYLES BELOW ---------------- */ 
+:root { 
+--primary-color: #d32f2f; 
+--primary-light: #ff6659; 
+--primary-dark: #9a0007; 
+--secondary-color: #388e3c; 
+--secondary-light: #6abf69; 
+--secondary-dark: #00600f; 
+--background-color: #f5f5f5; 
+--surface-color: #ffffff; 
+--text-primary: #212121; 
+--text-secondary: #757575; 
+--divider-color: #bdbdbd; 
+--shadow: 0 2px 4px rgba(0,0,0,0.1); 
+--shadow-hover: 0 4px 8px rgba(0,0,0,0.15); 
+} 
+/* ---------- YOUR ORIGINAL CSS KEPT AS IS ---------- */ 
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; } 
+body { background-color: var(--background-color); color: var(--text-primary); line-height: 1.6; } 
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; } 
+header { display:none; } /* Hidden because landing page replaces it */ 
+/* ... (весь інший CSS залишився без змін) ... */ 
+</style> 
+</head> 
+<body> 
+<!-- ----------------- NEW HEADER (ADDED) ------------------ --> 
+<header class="main-header"> 
+<!-- Логотип в лівій частині --> 
+<div class="logo"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/Logo%20(1).png" alt="Logo" width="187" height="28"> 
+</div> 
+</header> 
+<!-- ----------------- NEW LANDING PAGE (ADDED) ------------------ --> 
+<section class="landing-wrapper" id="landing"> 
+<!-- Decorations --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat.png" class="flake f1"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(1).png" class="flake f2"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(2).png" class="flake f3"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(3).png" class="flake f4"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/firework.png" class="fw fw1"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/firework%20(1).png" class="fw fw2"> 
+<!-- New presents image --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/presents.png" class="presents-img"> 
+<!-- New present image --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/present.png" class="present-img"> 
+<!-- New snowglobe image --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/snowglobe.png" class="snowglobe-img"> 
+<!-- Floating feature cards --> 
+<div class="float-card fc1"><img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/Christmas%20Icons.png"> Have fun</div> 
+<div class="float-card fc2"><img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/Christmas%20Icons%20(1).png"> Match people</div> 
+<div class="float-card fc3"><img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/Christmas%20Icons%20(2).png"> Share wishes</div> 
+<div class="float-card fc4"><img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/Christmas%20Icons%20(3).png"> Give presents</div> 
+<h1>Make This Holiday Magical<br>with Secret Nick</h1> 
+<p> 
+It's a secret — don't tell who you're matched with!<br> 
+Use the wishlist or preferences to pick the perfect gift.<br> 
+Be ready for the big gift exchange! 
+</p> 
+<a href="#" class="landing-btn" id="create-room-btn">Create Your Room</a> 
+</section> 
+<!-- ----------------- APP PAGE ----------------- --> 
+<section class="app-page" id="app-page"> 
+<!-- Decorations for app page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat.png" class="app-flake app-f1"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(1).png" class="app-flake app-f2"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(2).png" class="app-flake app-f3"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(3).png" class="app-flake app-f4"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/firework.png" class="app-fw app-fw1"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/firework%20(1).png" class="app-fw app-fw2"> 
+<!-- New presents image for app page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/presents.png" class="app-presents-img"> 
+<!-- New present image for app page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/present.png" class="app-present-img"> 
+<!-- New snowglobe image for app page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/snowglobe.png" class="app-snowglobe-img"> 
+<!-- Progress Steps --> 
+<div class="progress-steps" id="progress-steps"> 
+<div class="step active" id="step1"> 
+<div class="step-number">1</div> 
+<div class="step-text">Create room</div> 
+</div> 
+<div class="step" id="step2"> 
+<div class="step-number">2</div> 
+<div class="step-text">Add personal info</div> 
+</div> 
+<div class="step" id="step3"> 
+<div class="step-number">3</div> 
+<div class="step-text">Add wishlist</div> 
+</div> 
+</div> 
+<div class="wrapper" id="form-wrapper"> 
+<!-- Decoration image in top right corner for step 1 --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat.png" class="wrapper-decoration" id="step1-decoration"> 
+<!-- Step 1 Content --> 
+<div id="step1-content"> 
+<h1>Create Your Secret Nick Room</h1> 
+<p class="subtitle">Let the holiday magic begin! Set up your gift exchange in just a few steps.</p> 
+<!-- ROOM NAME --> 
+<label>Room name *</label> 
+<input type="text" class="input" id="room-name" placeholder="Enter your room name"> 
+<!-- ROOM DESCRIPTION --> 
+<label style="margin-top:20px;">Room description *</label> 
+<textarea class="textarea" id="room-description" placeholder="Enter your message here..."></textarea> 
+<!-- DATE & BUDGET --> 
+<div class="row"> 
+<div class="half"> 
+<label>Gift Exchange date *</label> 
+<input type="date" class="date-input" id="exchange-date"> 
+</div> 
+<div class="half"> 
+<label>Gift budget *</label> 
+<div class="budget-wrapper"> 
+<input type="number" class="budget-input" id="gift-budget" placeholder="Type in your budget"> 
+<div class="currency-tag">UAH</div> 
+</div> 
+<small style="color:#777;">0 means unlimited budget</small> 
+</div> 
+</div> 
+<!-- BUTTON --> 
+<button class="continue-btn" id="continue-btn">Continue</button> 
+</div> 
+<!-- Step 2 Content --> 
+<div id="step2-content" style="display: none;"> 
+<!-- Decoration image in top right corner for step 2 --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/car.png" class="wrapper-decoration" id="step2-decoration"> 
+<h1>Add Your Details</h1> 
+<p class="subtitle">Secret Nick needs to know where to send your present!</p> 
+<!-- NAME FIELDS --> 
+<div class="row"> 
+<div class="half"> 
+<label>First name *</label> 
+<input type="text" class="input" id="first-name" placeholder="e.g. Nickolas"> 
+</div> 
+<div class="half"> 
+<label>Last name *</label> 
+<input type="text" class="input" id="last-name" placeholder="e.g. Secret"> 
+</div> 
+</div> 
+<!-- PHONE + EMAIL --> 
+<div class="row" style="margin-top:25px;"> 
+<div class="half"> 
+<label>Phone number *</label> 
+<div class="phone-wrapper"> 
+<div class="phone-prefix">+380</div> 
+<input type="text" class="input" id="phone" placeholder="77 777 77 77"> 
+</div> 
+</div> 
+<div class="half"> 
+<label>Email</label> 
+<input type="email" class="input" id="email" placeholder="nickolas@example.com"> 
+</div> 
+</div> 
+<!-- ADDRESS --> 
+<label style="margin-top:25px;">Your delivery address (no North Pole required!) *</label> 
+<textarea class="textarea" id="address" placeholder="Where should St. Nick deliver your gift?"></textarea> 
+<!-- BUTTON --> 
+<button class="continue-btn" id="continue-btn-step2">Continue</button> 
+<!-- BACK --> 
+<a href="#" class="back-link" id="back-link-step2">← Back to the previous step</a> 
+</div> 
+<!-- Step 3 Content --> 
+<div id="step3-content" style="display: none;"> 
+<!-- Decoration image in top right corner for step 3 --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/presents.png" class="wrapper-decoration" id="step3-decoration"> 
+<h1>Add Your Wishes</h1> 
+<p class="subtitle">Let your Secret Nick know what would make you smile this season.</p> 
+<div class="gift-budget" id="gift-budget-display"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/presents.png" class="gift-budget-icon"> 
+Gift Budget: <strong>0 UAH</strong> 
+</div> 
+<!-- Wish Option 1 --> 
+<div class="section"> 
+<div class="section-title"> 
+<input type="radio" name="wishType" checked id="wish-ideas"> 
+<label for="wish-ideas">I have gift ideas! (add up to 5 gift ideas)</label> 
+</div> 
+<div id="wish-items-container"> 
+<!-- First wish item --> 
+<div class="wish-item" id="wish-item-1"> 
+<div class="row"> 
+<div class="half"> 
+<label>I wish for *</label> 
+<input type="text" class="input wish-item-input" placeholder="Enter your wish name" maxlength="40"> 
+<div class="count">0 / 40</div> 
+</div> 
+<div class="half"> 
+<label>Add link</label> 
+<input type="url" class="input wish-link-input" placeholder="E.g. https://example.com/item"> 
+</div> 
+</div> 
+</div> 
+</div> 
+<button class="add-btn" id="add-wish-btn">+ Add Wish</button> 
+</div> 
+<!-- Wish Option 2 --> 
+<div class="option-box"> 
+<label> 
+<input type="radio" name="wishType" id="surprise-gift"> 
+I want a surprise gift 
+</label> 
+</div> 
+<!-- Button --> 
+<button class="complete-btn" id="complete-btn">Complete</button> 
+<!-- Back --> 
+<a href="#" class="back-link" id="back-link-step3">← Back to the previous step</a> 
+</div> 
+<!-- Step 4 Content --> 
+<div id="step4-content" style="display: none;"> 
+<!-- Decoration image in top right corner for step 4 --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/wreath.png" class="wrapper-decoration" id="step4-decoration"> 
+<h1>Your Secret Nick Room is Ready!</h1> 
+<p>Share the link below with up to 20 friends to invite them — and don't lose your personal link! Let the festive magic begin!</p> 
+<!-- Admin Toggle --> 
+<div class="admin-toggle" id="admin-toggle"> 
+<div class="admin-toggle-circle" id="admin-toggle-circle"></div> 
+<div class="admin-toggle-text">I am admin</div> 
+</div> 
+<!-- Admin Password Section --> 
+<div class="admin-password-section" id="admin-password-section"> 
+<label>Enter admin password:</label> 
+<input type="password" class="admin-password-input" id="admin-password" placeholder="Enter password"> 
+<button class="admin-password-btn" id="admin-password-btn">Submit</button> 
+<div class="admin-password-error" id="admin-password-error">Incorrect password. Please try again.</div> 
+</div> 
+<!-- Room Link --> 
+<div class="section"> 
+<label>Your Room Link</label> 
+<div class="copy-input-wrapper"> 
+<input type="text" class="input" id="room-link" value="https://secretnickswap.com/join/abc123" readonly> 
+<button class="copy-btn" data-target="room-link"> 
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> 
+<path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/> 
+</svg> 
+<span class="copy-tooltip">Copy to clipboard</span> 
+</button> 
+</div> 
+</div> 
+<!-- Invitation Note --> 
+<div class="section"> 
+<label>Invitation Note</label> 
+<div class="note-box"> 
+Hey!<br><br> 
+Join our Secret Nick and make this holiday season magical! 🎄<br> 
+You'll get to surprise someone with a gift — and receive one too. 🎁✨<br><br> 
+🔗 Join here:<br> 
+https://secretnickswap.com/join/abc123 
+</div> 
+</div> 
+<!-- Personal Participant Link --> 
+<div class="section"> 
+<label>Your Personal Participant Link</label> 
+<p style="margin: 4px 0 8px; color:#777; font-size:14px;"> 
+This is your unique personal link to access the Secret Nick room. 
+</p> 
+<div class="copy-input-wrapper"> 
+<input type="text" class="input" id="personal-link" value="https://secretnickswap.com/join/yourlink456" readonly> 
+<button class="copy-btn" data-target="personal-link"> 
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> 
+<path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/> 
+</svg> 
+<span class="copy-tooltip">Copy to clipboard</span> 
+</button> 
+</div> 
+<p style="margin-top:6px; color:#c12727; font-size:14px;">Do not share this link with other users</p> 
+</div> 
+<button class="button" id="visit-room-btn">Visit Your Room</button> 
+</div> 
+</div> 
+</section> 
+<!-- ----------------- NEW FOOTER (ADDED) ------------------ --> 
+<footer class="main-footer"> 
+<div class="footer-left">© 2025 EPAM Systems. All rights reserved.</div> 
+<div class="footer-right">Privacy Policy Privacy Notice</div> 
+</footer> 
+<script> 
+// Store the gift budget from step 1 
+let giftBudgetValue = 0; 
+let wishItemCount = 1; 
+// Store wishlist data 
+let wishlistData = []; 
+// Store personal info data 
+let personalInfoData = {}; 
+// Global variable to track admin status 
+let isAdmin = false; 
+
+document.getElementById('create-room-btn').addEventListener('click', function(e) { 
+e.preventDefault(); 
+// Hide landing page 
+document.getElementById('landing').style.display = 'none'; 
+// Show app page 
+document.getElementById('app-page').style.display = 'block'; 
+}); 
+
+// Form validation and button activation for step 1 
+const roomNameInput = document.getElementById('room-name'); 
+const roomDescriptionInput = document.getElementById('room-description'); 
+const exchangeDateInput = document.getElementById('exchange-date'); 
+const giftBudgetInput = document.getElementById('gift-budget'); 
+const continueBtn = document.getElementById('continue-btn'); 
+
+function checkFormValidity() { 
+const isRoomNameFilled = roomNameInput.value.trim() !== ''; 
+const isRoomDescriptionFilled = roomDescriptionInput.value.trim() !== ''; 
+const isExchangeDateFilled = exchangeDateInput.value !== ''; 
+const isGiftBudgetFilled = giftBudgetInput.value !== ''; 
+
+if (isRoomNameFilled && isRoomDescriptionFilled && isExchangeDateFilled && isGiftBudgetFilled) { 
+continueBtn.classList.add('active'); 
+} else { 
+continueBtn.classList.remove('active'); 
+} 
+} 
+
+// Add event listeners to all form inputs for step 1 
+roomNameInput.addEventListener('input', checkFormValidity); 
+roomDescriptionInput.addEventListener('input', checkFormValidity); 
+exchangeDateInput.addEventListener('input', checkFormValidity); 
+giftBudgetInput.addEventListener('input', checkFormValidity); 
+
+// Continue button click handler for step 1 
+continueBtn.addEventListener('click', function() { 
+if (this.classList.contains('active')) { 
+// Store the gift budget value 
+giftBudgetValue = giftBudgetInput.value; 
+// Hide step 1 content 
+document.getElementById('step1-content').style.display = 'none'; 
+// Show step 2 content 
+document.getElementById('step2-content').style.display = 'block'; 
+// Update progress steps 
+document.getElementById('step1').classList.remove('active'); 
+document.getElementById('step2').classList.add('active'); 
+} 
+}); 
+
+// Form validation for step 2 
+const firstNameInput = document.getElementById('first-name'); 
+const lastNameInput = document.getElementById('last-name'); 
+const phoneInput = document.getElementById('phone'); 
+const addressInput = document.getElementById('address'); 
+const continueBtnStep2 = document.getElementById('continue-btn-step2'); 
+
+function checkStep2FormValidity() { 
+const isFirstNameFilled = firstNameInput.value.trim() !== ''; 
+const isLastNameFilled = lastNameInput.value.trim() !== ''; 
+const isPhoneFilled = phoneInput.value.trim() !== ''; 
+const isAddressFilled = addressInput.value.trim() !== ''; 
+
+if (isFirstNameFilled && isLastNameFilled && isPhoneFilled && isAddressFilled) { 
+continueBtnStep2.classList.add('active'); 
+} else { 
+continueBtnStep2.classList.remove('active'); 
+} 
+} 
+
+// Add event listeners for step 2 inputs 
+firstNameInput.addEventListener('input', checkStep2FormValidity); 
+lastNameInput.addEventListener('input', checkStep2FormValidity); 
+phoneInput.addEventListener('input', checkStep2FormValidity); 
+addressInput.addEventListener('input', checkStep2FormValidity); 
+
+// Continue button handler for step 2 
+continueBtnStep2.addEventListener('click', function() { 
+if (this.classList.contains('active')) { 
+// Update gift budget display 
+const budgetDisplay = giftBudgetValue === '0' ? 'Unlimited' : giftBudgetValue + ' UAH'; 
+document.getElementById('gift-budget-display').innerHTML = ` 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/presents.png" class="gift-budget-icon"> 
+Gift Budget: <strong>${budgetDisplay}</strong> 
+`; 
+// Hide step 2 content 
+document.getElementById('step2-content').style.display = 'none'; 
+// Show step 3 content 
+document.getElementById('step3-content').style.display = 'block'; 
+// Update progress steps 
+document.getElementById('step2').classList.remove('active'); 
+document.getElementById('step3').classList.add('active'); 
+} 
+}); 
+
+// Add Wish functionality 
+document.getElementById('add-wish-btn').addEventListener('click', function() { 
+if (wishItemCount < 5) { 
+wishItemCount++; 
+const newWishItem = document.createElement('div'); 
+newWishItem.className = 'wish-item'; 
+newWishItem.id = 'wish-item-' + wishItemCount; 
+newWishItem.innerHTML = ` 
+<div class="row"> 
+<div class="half"> 
+<label>I wish for *</label> 
+<input type="text" class="input wish-item-input" placeholder="Enter your wish name" maxlength="40"> 
+<div class="count">0 / 40</div> 
+</div> 
+<div class="half"> 
+<label>Add link</label> 
+<input type="url" class="input wish-link-input" placeholder="E.g. https://example.com/item"> 
+</div> 
+</div> 
+`; 
+document.getElementById('wish-items-container').appendChild(newWishItem); 
+// Add character count functionality to new input 
+const newInput = newWishItem.querySelector('.wish-item-input'); 
+const newCount = newWishItem.querySelector('.count'); 
+newInput.addEventListener('input', function() { 
+newCount.textContent = this.value.length + ' / 40'; 
+}); 
+// Add validation listener 
+newInput.addEventListener('input', checkStep3FormValidity); 
+// Disable button if reached max 
+if (wishItemCount >= 5) { 
+this.disabled = true; 
+} 
+} 
+}); 
+
+// Character count for first wish item 
+document.querySelector('.wish-item-input').addEventListener('input', function() { 
+const countElement = this.parentElement.querySelector('.count'); 
+countElement.textContent = this.value.length + ' / 40'; 
+}); 
+
+// Form validation for step 3 
+const completeBtn = document.getElementById('complete-btn'); 
+
+function checkStep3FormValidity() { 
+const isWishIdeasSelected = document.getElementById('wish-ideas').checked; 
+const isSurpriseSelected = document.getElementById('surprise-gift').checked; 
+
+if (isSurpriseSelected) { 
+completeBtn.classList.add('active'); 
+return; 
+} 
+
+if (isWishIdeasSelected) { 
+// Check if at least one wish item is filled 
+const wishInputs = document.querySelectorAll('.wish-item-input'); 
+let hasFilledWish = false; 
+wishInputs.forEach(input => { 
+if (input.value.trim() !== '') { 
+hasFilledWish = true; 
+} 
+}); 
+
+if (hasFilledWish) { 
+completeBtn.classList.add('active'); 
+} else { 
+completeBtn.classList.remove('active'); 
+} 
+} else { 
+completeBtn.classList.remove('active'); 
+} 
+} 
+
+// Add event listeners for step 3 inputs 
+document.querySelector('.wish-item-input').addEventListener('input', checkStep3FormValidity); 
+document.getElementById('wish-ideas').addEventListener('change', checkStep3FormValidity); 
+document.getElementById('surprise-gift').addEventListener('change', checkStep3FormValidity); 
+
+// Function to collect wishlist data 
+function collectWishlistData() { 
+wishlistData = []; 
+const wishItems = document.querySelectorAll('.wish-item'); 
+wishItems.forEach((item, index) => { 
+const wishName = item.querySelector('.wish-item-input').value.trim(); 
+const wishLink = item.querySelector('.wish-link-input').value.trim(); 
+if (wishName) { 
+wishlistData.push({ 
+name: wishName, 
+link: wishLink 
+}); 
+} 
+}); 
+} 
+
+// Function to collect personal info data 
+function collectPersonalInfoData() { 
+personalInfoData = { 
+firstName: document.getElementById('first-name').value || 'Anastasiia', 
+lastName: document.getElementById('last-name').value || 'Petrenko', 
+phone: document.getElementById('phone').value ? '+38 0' + document.getElementById('phone').value.replace(/\D/g, '').replace(/(\d{2})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4') : '+38 099 876 54 32', 
+email: document.getElementById('email').value || 'anastasiiapetrenko@gmail.com', 
+address: document.getElementById('address').value || 'Kyiv, NP #212' 
+}; 
+} 
+
+// Complete button handler for step 3 
+completeBtn.addEventListener('click', function() { 
+if (this.classList.contains('active')) { 
+// Collect wishlist data 
+collectWishlistData(); 
+// Collect personal info data 
+collectPersonalInfoData(); 
+// Generate unique room code 
+const roomCode = Math.random().toString(36).substring(2, 8).toUpperCase(); 
+const personalCode = Math.random().toString(36).substring(2, 10).toUpperCase(); 
+// Update links with generated codes 
+document.getElementById('room-link').value = `https://secretnickswap.com/join/${roomCode}`; 
+document.getElementById('personal-link').value = `https://secretnickswap.com/join/${personalCode}`; 
+// Update invitation note with actual room link 
+const noteBox = document.querySelector('.note-box'); 
+noteBox.innerHTML = noteBox.innerHTML.replace('abc123', roomCode); 
+// Hide step 3 content 
+document.getElementById('step3-content').style.display = 'none'; 
+// Show step 4 content 
+document.getElementById('step4-content').style.display = 'block'; 
+// Hide progress steps on step 4 
+document.getElementById('progress-steps').style.display = 'none'; 
+} 
+}); 
+
+// Admin toggle functionality 
+document.getElementById('admin-toggle').addEventListener('click', function() { 
+const adminToggleCircle = document.getElementById('admin-toggle-circle'); 
+const adminPasswordSection = document.getElementById('admin-password-section'); 
+if (adminToggleCircle.classList.contains('active')) { 
+adminToggleCircle.classList.remove('active'); 
+adminPasswordSection.classList.remove('active'); 
+} else { 
+adminToggleCircle.classList.add('active'); 
+adminPasswordSection.classList.add('active'); 
+} 
+}); 
+
+// Admin password submit functionality 
+document.getElementById('admin-password-btn').addEventListener('click', function() { 
+const adminPassword = document.getElementById('admin-password').value; 
+const adminPasswordError = document.getElementById('admin-password-error'); 
+if (adminPassword === '1111') { 
+// Password is correct - navigate to room2.html as admin 
+isAdmin = true; 
+window.location.href = 'room2.html'; 
+} else { 
+// Password is incorrect - show error 
+adminPasswordError.style.display = 'block'; 
+} 
+}); 
+
+// Visit Room button handler - opens room1.html for regular user 
+document.getElementById('visit-room-btn').addEventListener('click', function() { 
+window.location.href = 'room1.html'; 
+}); 
+
+// Copy button functionality 
+document.addEventListener('click', function(e) { 
+if (e.target.closest('.copy-btn')) { 
+const copyBtn = e.target.closest('.copy-btn'); 
+const targetId = copyBtn.getAttribute('data-target'); 
+const input = document.getElementById(targetId); 
+// Select the text 
+input.select(); 
+input.setSelectionRange(0, 99999); // For mobile devices 
+// Copy the text 
+navigator.clipboard.writeText(input.value).then(function() { 
+// Show success feedback 
+const originalHTML = copyBtn.innerHTML; 
+copyBtn.classList.add('copied'); 
+copyBtn.innerHTML = ` 
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#2C5134"> 
+<path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/> 
+</svg> 
+<span class="copy-tooltip">Copy to clipboard</span> 
+`; 
+// Reset after 2 seconds 
+setTimeout(function() { 
+copyBtn.classList.remove('copied'); 
+copyBtn.innerHTML = originalHTML; 
+}, 2000); 
+}).catch(function(err) { 
+console.error('Failed to copy text: ', err); 
+// Fallback for older browsers 
+try { 
+document.execCommand('copy'); 
+const originalHTML = copyBtn.innerHTML; 
+copyBtn.classList.add('copied'); 
+copyBtn.innerHTML = ` 
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#2C5134"> 
+<path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/> 
+</svg> 
+<span class="copy-tooltip">Copy to clipboard</span> 
+`; 
+setTimeout(function() { 
+copyBtn.classList.remove('copied'); 
+copyBtn.innerHTML = originalHTML; 
+}, 2000); 
+} catch (fallbackErr) { 
+console.error('Fallback copy failed: ', fallbackErr); 
+alert('Failed to copy text to clipboard'); 
+} 
+}); 
+} 
+}); 
+
+// Back button handlers 
+document.getElementById('back-link-step2').addEventListener('click', function(e) { 
+e.preventDefault(); 
+// Hide step 2 content 
+document.getElementById('step2-content').style.display = 'none'; 
+// Show step 1 content 
+document.getElementById('step1-content').style.display = 'block'; 
+// Update progress steps 
+document.getElementById('step2').classList.remove('active'); 
+document.getElementById('step1').classList.add('active'); 
+}); 
+
+document.getElementById('back-link-step3').addEventListener('click', function(e) { 
+e.preventDefault(); 
+// Hide step 3 content 
+document.getElementById('step3-content').style.display = 'none'; 
+// Show step 2 content 
+document.getElementById('step2-content').style.display = 'block'; 
+// Update progress steps 
+document.getElementById('step3').classList.remove('active'); 
+document.getElementById('step2').classList.add('active'); 
+}); 
+</script> 
+</body> 
+</html>
