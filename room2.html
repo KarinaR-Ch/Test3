@@ -1,0 +1,1511 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+<meta charset="UTF-8"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<title>Secret Santa Room - Admin</title> 
+<style> 
+/* -------------------- NEW HEADER STYLES (ADDED) --------------------- */ 
+.main-header { 
+width: 100%; 
+height: 68px; 
+background: white; 
+border-bottom: 1px solid var(--divider-color); 
+padding: 20px 120px; 
+display: flex; 
+align-items: center; 
+gap: 40px; 
+opacity: 1; 
+} 
+.logo { 
+display: flex; 
+align-items: center; 
+} 
+/* -------------------- NEW FOOTER STYLES (ADDED) --------------------- */ 
+.main-footer { 
+width: 100%; 
+height: 61px; 
+background: #192D1E; 
+padding: 20px 120px; 
+display: flex; 
+justify-content: space-between; 
+align-items: center; 
+opacity: 1; 
+} 
+.footer-left, .footer-right { 
+font-family: Nunito; 
+font-weight: 500; 
+font-size: 14px; 
+line-height: 150%; 
+color: #FAFAFA; 
+opacity: 1; 
+white-space: nowrap; 
+} 
+/* Snowflake decorations for app page */ 
+.app-flake { 
+position: absolute; 
+opacity: 0.25; 
+} 
+.app-f1 { top: 20px; left: 0; width: 120px; } 
+.app-f2 { top: 30px; right: 0; width: 120px; } 
+.app-f3 { bottom: 40px; left: 0; width: 140px; } 
+.app-f4 { bottom: 40px; right: 0; width: 140px; } 
+/* Fireworks dots for app page */ 
+.app-fw { 
+position: absolute; 
+width: 80px; 
+} 
+.app-fw1 { top: 20px; left: 45%; } 
+.app-fw2 { bottom: 20px; left: 50%; } 
+/* New presents image for app page */ 
+.app-presents-img { 
+position: absolute; 
+width: 87px; 
+height: 87px; 
+left: 45px; 
+top: 50%; 
+transform: translateY(-50%); 
+z-index: 1; 
+} 
+/* New present image for app page */ 
+.app-present-img { 
+position: absolute; 
+width: 87px; 
+height: 87px; 
+right: 45px; 
+top: 50%; 
+transform: translateY(-50%); 
+z-index: 1; 
+} 
+/* New snowglobe image for app page */ 
+.app-snowglobe-img { 
+position: absolute; 
+width: 87px; 
+height: 87px; 
+right: 10px; 
+bottom: 10px; 
+} 
+@media (min-width: 768px) { 
+.app-snowglobe-img { 
+left: calc(50% + 230px); 
+top: calc(50% + 95px); 
+right: auto; 
+bottom: auto; 
+} 
+} 
+/* ---------------- PARTICIPANT PAGE STYLES ---------------- */ 
+.participant-page { 
+min-height: calc(100vh - 129px); 
+background: linear-gradient(#eef7ff, #ffffff); 
+padding: 40px 20px; 
+position: relative; 
+} 
+.participant-container { 
+width: 100%; 
+max-width: 1200px; 
+margin: 30px auto; 
+display: flex; 
+flex-direction: column; 
+gap: 20px; 
+align-items: stretch; 
+} 
+@media (min-width: 768px) { 
+.participant-container { 
+flex-direction: row; 
+align-items: flex-start; 
+} 
+} 
+/* LEFT COLUMN */ 
+.participant-left { 
+flex: 2.2; 
+} 
+/* RIGHT COLUMN */ 
+.participant-right { 
+flex: 1.2; 
+display: flex; 
+flex-direction: column; 
+gap: 20px; 
+} 
+/* CARDS */ 
+.participant-card { 
+background: white; 
+border-radius: 14px; 
+padding: 20px; 
+box-shadow: 0 4px 16px rgba(0,0,0,0.08); 
+} 
+@media (min-width: 768px) { 
+.participant-card { 
+padding: 20px 26px; 
+} 
+} 
+/* Secret Squad Card */ 
+.squad-card { 
+background: #195a36; 
+color: white; 
+padding: 20px; 
+border-radius: 16px; 
+margin-bottom: 20px; 
+position: relative; 
+overflow: hidden; 
+} 
+@media (min-width: 768px) { 
+.squad-card { 
+padding: 28px; 
+} 
+} 
+.squad-card h2 { 
+margin-top: 0; 
+font-size: 22px; 
+} 
+@media (min-width: 768px) { 
+.squad-card h2 { 
+font-size: 26px; 
+} 
+} 
+.squad-desc { 
+max-width: 100%; 
+line-height: 1.5; 
+margin-bottom: 20px; 
+font-size: 14px; 
+} 
+@media (min-width: 768px) { 
+.squad-desc { 
+max-width: 480px; 
+margin-bottom: 22px; 
+font-size: inherit; 
+} 
+} 
+.info-boxes { 
+display: flex; 
+flex-direction: column; 
+gap: 12px; 
+} 
+@media (min-width: 768px) { 
+.info-boxes { 
+flex-direction: row; 
+gap: 20px; 
+} 
+} 
+.info-box { 
+flex: 1; 
+background: white; 
+color: black; 
+border-radius: 12px; 
+padding: 14px; 
+text-align: center; 
+font-size: 14px; 
+box-shadow: 0 3px 8px rgba(0,0,0,0.1); 
+} 
+@media (min-width: 768px) { 
+.info-box { 
+padding: 16px; 
+font-size: 15px; 
+} 
+} 
+.info-title { 
+font-weight: bold; 
+margin-bottom: 6px; 
+font-size: 13px; 
+display: flex; 
+align-items: center; 
+gap: 8px; 
+justify-content: center; 
+} 
+@media (min-width: 768px) { 
+.info-title { 
+font-size: inherit; 
+} 
+} 
+.info-title-icon { 
+width: 30px; 
+height: 32px; 
+} 
+/* Ball decoration for Secret Squad card */ 
+.squad-ball-decoration { 
+position: absolute; 
+top: 10px; 
+right: 10px; 
+width: 300px; 
+height: 166px; 
+z-index: 1; 
+} 
+/* Vector decoration for Who's Playing card */ 
+.players-vector-decoration { 
+position: absolute; 
+top: 10px; 
+right: 10px; 
+width: 366px; 
+height: 66px; 
+z-index: 1; 
+} 
+/* Participant Info Card */ 
+.participant-info-card { 
+background: #d64040; 
+color: white; 
+padding: 18px; 
+border-radius: 16px; 
+position: relative; 
+overflow: hidden; 
+} 
+@media (min-width: 768px) { 
+.participant-info-card { 
+padding: 22px; 
+} 
+} 
+.participant-info-card h3 { 
+margin-top: 0; 
+font-size: 20px; 
+} 
+@media (min-width: 768px) { 
+.participant-info-card h3 { 
+font-size: 22px; 
+} 
+} 
+.participant-info-card input { 
+width: 100%; 
+padding: 10px; 
+border-radius: 8px; 
+border: none; 
+margin-top: 6px; 
+font-size: 14px; 
+} 
+@media (min-width: 768px) { 
+.participant-info-card input { 
+padding: 12px; 
+font-size: 15px; 
+} 
+} 
+.small-text { 
+font-size: 11px; 
+opacity: 0.9; 
+margin-top: 4px; 
+} 
+@media (min-width: 768px) { 
+.small-text { 
+font-size: 12px; 
+} 
+} 
+.button-outline { 
+margin-top: 12px; 
+width: 100%; 
+padding: 10px; 
+border-radius: 10px; 
+border: 2px solid white; 
+background: transparent; 
+color: white; 
+cursor: pointer; 
+font-size: 14px; 
+} 
+@media (min-width: 768px) { 
+.button-outline { 
+margin-top: 14px; 
+padding: 12px; 
+font-size: 15px; 
+} 
+} 
+.button-outline:hover { 
+background: rgba(255,255,255,0.15); 
+} 
+/* Decoration for Participant Info Card */ 
+.participant-info-decoration { 
+position: absolute; 
+top: 10px; 
+right: 10px; 
+width: 41.9px; 
+height: 41.9px; 
+z-index: 1; 
+} 
+/* WHO'S PLAYING */ 
+.players-card { 
+position: relative; 
+overflow: hidden; 
+} 
+.players-card h2 { 
+font-size: 20px; 
+margin-bottom: 12px; 
+position: relative; 
+display: flex; 
+align-items: center; 
+justify-content: center; 
+gap: 10px; 
+} 
+@media (min-width: 768px) { 
+.players-card h2 { 
+font-size: 24px; 
+} 
+} 
+.player-row { 
+background: #f9fafb; 
+padding: 12px; 
+border-radius: 10px; 
+margin-bottom: 8px; 
+font-size: 14px; 
+display: flex; 
+justify-content: space-between; 
+align-items: center; 
+} 
+@media (min-width: 768px) { 
+.player-row { 
+padding: 14px; 
+margin-bottom: 10px; 
+font-size: 16px; 
+} 
+} 
+.you-label { 
+font-size: 12px; 
+color: #195a36; 
+} 
+.admin-label { 
+font-size: 12px; 
+color: #d32f2f; 
+font-weight: bold; 
+} 
+@media (min-width: 768px) { 
+.you-label { 
+font-size: 13px; 
+} 
+.admin-label { 
+font-size: 13px; 
+} 
+} 
+.delete-btn { 
+background: #d32f2f; 
+color: white; 
+border: none; 
+border-radius: 4px; 
+padding: 4px 8px; 
+cursor: pointer; 
+font-size: 12px; 
+} 
+.delete-btn:hover { 
+background: #b71c1c; 
+} 
+/* WISHLIST */ 
+.wishlist-card h2 { 
+margin: 0 0 12px 0; 
+font-size: 20px; 
+text-align: center; 
+background: #2C5134; 
+color: white; 
+padding: 12px; 
+border-radius: 8px; 
+position: relative; 
+display: flex; 
+align-items: center; 
+justify-content: center; 
+gap: 10px; 
+} 
+@media (min-width: 768px) { 
+.wishlist-card h2 { 
+margin: 0 0 14px 0; 
+font-size: inherit; 
+} 
+} 
+.wishlist-snowflake { 
+width: 42px; 
+height: 42px; 
+position: absolute; 
+} 
+.wishlist-snowflake-left { 
+left: 10px; 
+} 
+.wishlist-snowflake-right { 
+right: 10px; 
+} 
+.wish-row { 
+background: white; 
+border: 1px solid #e9ecef; 
+padding: 10px; 
+border-radius: 8px; 
+display: flex; 
+justify-content: space-between; 
+margin-bottom: 8px; 
+font-size: 13px; 
+} 
+@media (min-width: 768px) { 
+.wish-row { 
+padding: 12px; 
+margin-bottom: 10px; 
+font-size: inherit; 
+} 
+} 
+.wish-link { 
+color: #195a36; 
+font-size: 12px; 
+text-decoration: underline; 
+cursor: pointer; 
+} 
+@media (min-width: 768px) { 
+.wish-link { 
+font-size: 14px; 
+} 
+} 
+.button-green { 
+margin-top: 10px; 
+width: 100%; 
+padding: 11px; 
+border-radius: 10px; 
+border: 2px solid #195a36; 
+background: white; 
+color: #195a36; 
+font-weight: bold; 
+cursor: pointer; 
+font-size: 14px; 
+} 
+@media (min-width: 768px) { 
+.button-green { 
+padding: 13px; 
+font-size: inherit; 
+} 
+} 
+.button-green:hover { 
+background: #195a36; 
+color: white; 
+} 
+/* ---------------- LOOK WHO YOU GOT CARD STYLES ---------------- */ 
+.look-who-card { 
+display: none; 
+width: 100%; 
+text-align: center; 
+background: white; 
+border-radius: 20px; 
+padding: 32px 24px; 
+box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15); 
+position: relative; 
+} 
+.look-who-top-bg { 
+background: #e3d5c7; 
+height: 90px; 
+position: absolute; 
+top: 0; 
+left: 0; 
+right: 0; 
+border-radius: 20px 20px 0 0; 
+} 
+.look-who-santa-img { 
+width: 256px; 
+height: 161px; 
+position: absolute; 
+top: -130px; 
+left: 50%; 
+transform: translateX(-50%); 
+z-index: 2; 
+} 
+.look-who-card h1 { 
+margin-top: 0; 
+color: #c62828; 
+font-size: 26px; 
+font-weight: 700; 
+position: relative; 
+z-index: 1; 
+height: 90px; 
+display: flex; 
+justify-content: center; 
+align-items: center; 
+line-height: 1; 
+transform: translateY(-35px); 
+} 
+.look-who-subtitle { 
+margin: 16px 0 10px; 
+color: #444; 
+font-size: 15px; 
+position: relative; 
+z-index: 1; 
+} 
+.look-who-name { 
+font-size: 26px; 
+font-weight: 700; 
+margin-bottom: 28px; 
+color: #000; 
+position: relative; 
+z-index: 1; 
+} 
+.look-who-btn { 
+display: inline-block; 
+padding: 12px 28px; 
+border-radius: 40px; 
+border: 2px solid #2f5330; 
+color: #2f5330; 
+font-size: 16px; 
+text-decoration: none; 
+font-weight: 600; 
+transition: 0.2s; 
+position: relative; 
+z-index: 1; 
+cursor: pointer; 
+background: white; 
+} 
+.look-who-btn:hover { 
+background: #2f5330; 
+color: white; 
+} 
+/* ---------------- DRAW NAMES CARD STYLES ---------------- */ 
+.draw-names-card { 
+width: 100%; 
+text-align: center; 
+background: white; 
+border-radius: 20px; 
+padding: 32px 24px; 
+box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15); 
+position: relative; 
+margin-bottom: 20px; 
+} 
+.draw-names-top-bg { 
+background: #e3d5c7; 
+height: 90px; 
+position: absolute; 
+top: 0; 
+left: 0; 
+right: 0; 
+border-radius: 20px 20px 0 0; 
+} 
+.draw-names-img { 
+width: 150px; 
+height: 106px; 
+position: absolute; 
+top: -80px; 
+right: 10px; 
+z-index: 2; 
+} 
+.draw-names-card h1 { 
+margin-top: 0; 
+color: #CC3332; 
+font-size: 20px; 
+font-weight: 500; 
+position: relative; 
+z-index: 1; 
+height: 90px; 
+display: flex; 
+justify-content: center; 
+align-items: center; 
+line-height: 150%; 
+transform: translateY(-35px); 
+} 
+.draw-names-description { 
+margin: 16px 0 10px; 
+color: #444; 
+font-size: 15px; 
+position: relative; 
+z-index: 1; 
+line-height: 150%; 
+} 
+.draw-names-btn { 
+display: inline-block; 
+padding: 12px 28px; 
+border-radius: 40px; 
+border: 2px solid #2f5330; 
+color: #2f5330; 
+font-size: 16px; 
+text-decoration: none; 
+font-weight: 600; 
+transition: 0.2s; 
+position: relative; 
+z-index: 1; 
+background: white; 
+cursor: pointer; 
+} 
+.draw-names-btn:hover { 
+background: #2f5330; 
+color: white; 
+} 
+/* ---------------- WISHLIST PAGE STYLES ---------------- */ 
+.wishlist-page { 
+display: none; 
+min-height: calc(100vh - 129px); 
+background: linear-gradient(#eef7ff, #ffffff); 
+padding: 40px 20px; 
+position: relative; 
+} 
+.wishlist-container { 
+width: 100%; 
+max-width: 800px; 
+margin: 30px auto; 
+background: white; 
+border-radius: 16px; 
+padding: 40px; 
+box-shadow: 0 8px 25px rgba(0,0,0,0.08); 
+position: relative; 
+z-index: 2; 
+overflow: hidden; 
+} 
+.wishlist-decoration { 
+position: absolute; 
+top: 20px; 
+left: 20px; 
+width: 69px; 
+height: 56px; 
+z-index: 3; 
+} 
+.wishlist-container h1 { 
+text-align: center; 
+margin-bottom: 30px; 
+color: #195a36; 
+position: relative; 
+display: flex; 
+align-items: center; 
+justify-content: center; 
+gap: 10px; 
+} 
+.wishlist-items { 
+display: flex; 
+flex-direction: column; 
+gap: 15px; 
+} 
+.wishlist-item { 
+background: #f9fafb; 
+padding: 20px; 
+border-radius: 12px; 
+border: 1px solid #e9ecef; 
+} 
+.wishlist-item h3 { 
+margin: 0 0 10px 0; 
+color: #195a36; 
+font-size: 18px; 
+} 
+.wishlist-item-link { 
+color: #195a36; 
+text-decoration: underline; 
+cursor: pointer; 
+font-size: 14px; 
+display: inline-block; 
+margin-top: 8px; 
+} 
+.wishlist-item-link:hover { 
+color: #134028; 
+} 
+.back-button { 
+display: block; 
+width: 200px; 
+margin: 30px auto 0; 
+padding: 12px; 
+background: #195a36; 
+color: white; 
+border: none; 
+border-radius: 8px; 
+cursor: pointer; 
+text-align: center; 
+text-decoration: none; 
+font-size: 16px; 
+} 
+.back-button:hover { 
+background: #134028; 
+} 
+/* ---------------- PERSONAL INFO PAGE STYLES ---------------- */ 
+.personal-info-page { 
+display: none; 
+min-height: calc(100vh - 129px); 
+background: linear-gradient(#eef7ff, #ffffff); 
+padding: 40px 20px; 
+position: relative; 
+} 
+.personal-info-container { 
+width: 100%; 
+max-width: 820px; 
+margin: 30px auto; 
+background: white; 
+border-radius: 16px; 
+padding: 40px 50px; 
+box-shadow: 0 8px 25px rgba(0,0,0,0.08); 
+position: relative; 
+z-index: 2; 
+overflow: hidden; 
+} 
+.personal-info-decoration { 
+position: absolute; 
+top: 20px; 
+left: 20px; 
+width: 69px; 
+height: 56px; 
+z-index: 3; 
+} 
+.close-btn { 
+position: absolute; 
+right: 35px; 
+top: 35px; 
+font-size: 26px; 
+color: #3d5d3f; 
+cursor: pointer; 
+} 
+.personal-info-container h1 { 
+font-size: 32px; 
+font-weight: 700; 
+margin: 0 0 8px; 
+text-align: center; 
+} 
+.personal-info-subtitle { 
+margin: 0 0 25px; 
+color: #555; 
+text-align: center; 
+} 
+.info-box { 
+border: 1px solid #CAD8C9; 
+padding: 30px; 
+border-radius: 12px; 
+} 
+.grid { 
+display: grid; 
+grid-template-columns: 1fr 1fr; 
+gap: 25px 20px; 
+} 
+.label { 
+font-size: 14px; 
+color: #555; 
+margin-bottom: 4px; 
+} 
+.value { 
+font-size: 17px; 
+font-weight: 600; 
+color: #000; 
+} 
+.btn-row { 
+margin-top: 30px; 
+text-align: right; 
+display: none; 
+} 
+.back-btn { 
+background: #2F5330; 
+color: white; 
+padding: 14px 32px; 
+border-radius: 30px; 
+display: inline-block; 
+font-size: 16px; 
+text-decoration: none; 
+border: none; 
+cursor: pointer; 
+} 
+.header { 
+display: none; 
+} 
+.header img { 
+width: 70px; 
+} 
+/* ---------------- LOOK WHO YOU GOT PAGE STYLES ---------------- */ 
+.look-who-page { 
+display: none; 
+min-height: calc(100vh - 129px); 
+background: linear-gradient(#eef7ff, #ffffff); 
+padding: 40px 20px; 
+position: relative; 
+} 
+.look-who-container { 
+width: 100%; 
+max-width: 1100px; 
+margin: 40px auto; 
+padding: 0 20px; 
+} 
+.look-who-header { 
+background: #e6d8c7; 
+padding: 35px 0; 
+text-align: center; 
+font-size: 32px; 
+color: #b32727; 
+font-weight: 700; 
+letter-spacing: 1px; 
+} 
+.look-who-grid { 
+display: grid; 
+grid-template-columns: 1fr 1fr; 
+gap: 40px; 
+} 
+.look-who-card-styled { 
+background: #f9fdf9; 
+padding: 30px; 
+border: 1px solid #d3e4d3; 
+border-radius: 12px; 
+position: relative; 
+} 
+.snowflakes { 
+position: absolute; 
+top: 15px; 
+right: 20px; 
+font-size: 20px; 
+color: #7da28c; 
+} 
+.field-title { 
+font-size: 14px; 
+color: #686868; 
+margin-bottom: 4px; 
+} 
+.field-value { 
+font-size: 18px; 
+font-weight: 600; 
+margin-bottom: 20px; 
+} 
+.wish-item-styled { 
+background: #ffffff; 
+padding: 18px 26px; 
+border-radius: 12px; 
+margin-bottom: 15px; 
+box-shadow: 0 3px 10px rgba(0,0,0,0.08); 
+display: flex; 
+justify-content: space-between; 
+align-items: center; 
+} 
+.link { 
+font-size: 16px; 
+color: #004d2b; 
+font-weight: 600; 
+text-decoration: underline; 
+cursor: pointer; 
+} 
+.btn { 
+display: block; 
+margin: 40px auto 0; 
+padding: 16px 40px; 
+background: #1e4422; 
+color: white; 
+border-radius: 40px; 
+text-decoration: none; 
+font-size: 18px; 
+font-weight: 600; 
+cursor: pointer; 
+border: none; 
+text-align: center; 
+} 
+.btn:hover { 
+background: #15331a; 
+} 
+/* ---------------- DELETE CONFIRMATION MODAL STYLES ---------------- */ 
+.delete-modal { 
+display: none; 
+position: fixed; 
+top: 0; 
+left: 0; 
+width: 100%; 
+height: 100%; 
+background-color: rgba(0, 0, 0, 0.5); 
+z-index: 1000; 
+justify-content: center; 
+align-items: center; 
+} 
+.delete-modal-content { 
+background: white; 
+padding: 30px; 
+border-radius: 16px; 
+box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
+max-width: 400px; 
+width: 90%; 
+text-align: center; 
+position: relative; 
+} 
+.delete-modal-title { 
+font-size: 20px; 
+font-weight: 600; 
+margin-bottom: 15px; 
+color: #d32f2f; 
+} 
+.delete-modal-text { 
+font-size: 16px; 
+color: #555; 
+margin-bottom: 25px; 
+line-height: 1.5; 
+} 
+.delete-modal-buttons { 
+display: flex; 
+gap: 15px; 
+justify-content: center; 
+} 
+.delete-modal-btn { 
+padding: 10px 25px; 
+border: none; 
+border-radius: 8px; 
+font-size: 15px; 
+cursor: pointer; 
+transition: background-color 0.3s; 
+} 
+.delete-modal-yes { 
+background: #d32f2f; 
+color: white; 
+} 
+.delete-modal-yes:hover { 
+background: #b71c1c; 
+} 
+.delete-modal-no { 
+background: #f0f0f0; 
+color: #333; 
+} 
+.delete-modal-no:hover { 
+background: #e0e0e0; 
+} 
+/* Mobile-specific adjustments for header and footer */ 
+@media (max-width: 768px) { 
+.main-header { 
+padding: 20px; 
+height: 60px; 
+} 
+.main-footer { 
+padding: 20px; 
+height: auto; 
+flex-direction: column; 
+gap: 10px; 
+text-align: center; 
+} 
+.footer-left, .footer-right { 
+white-space: normal; 
+} 
+.presents-img, 
+.present-img, 
+.snowglobe-img, 
+.app-presents-img, 
+.app-present-img, 
+.app-snowglobe-img { 
+width: 60px; 
+height: 60px; 
+} 
+.flake, 
+.app-flake { 
+width: 80px; 
+} 
+.fw, 
+.app-fw { 
+width: 60px; 
+} 
+.wishlist-container { 
+padding: 20px; 
+} 
+.personal-info-container { 
+padding: 20px; 
+} 
+.grid { 
+grid-template-columns: 1fr; 
+gap: 15px; 
+} 
+.header { 
+flex-direction: column; 
+text-align: center; 
+gap: 8px; 
+} 
+.header img { 
+width: 50px; 
+} 
+.squad-ball-decoration { 
+width: 150px; 
+height: 83px; 
+top: 8px; 
+right: 8px; 
+} 
+.players-vector-decoration { 
+width: 183px; 
+height: 33px; 
+top: 8px; 
+right: 8px; 
+} 
+.wishlist-snowflake { 
+width: 32px; 
+height: 32px; 
+} 
+.participant-info-decoration { 
+width: 35px; 
+height: 35px; 
+top: 8px; 
+right: 8px; 
+} 
+.look-who-card { 
+padding: 24px 20px; 
+} 
+.look-who-santa-img { 
+width: 200px; 
+height: 126px; 
+top: -100px; 
+} 
+.look-who-card h1 { 
+font-size: 22px; 
+height: 70px; 
+transform: translateY(-25px); 
+} 
+.look-who-name { 
+font-size: 22px; 
+} 
+.look-who-btn { 
+padding: 10px 24px; 
+font-size: 15px; 
+} 
+.draw-names-card { 
+padding: 24px 20px; 
+} 
+.draw-names-img { 
+width: 120px; 
+height: 85px; 
+top: -60px; 
+} 
+.draw-names-card h1 { 
+font-size: 18px; 
+height: 70px; 
+transform: translateY(-25px); 
+} 
+.draw-names-btn { 
+padding: 10px 24px; 
+font-size: 15px; 
+} 
+.look-who-grid { 
+grid-template-columns: 1fr; 
+gap: 20px; 
+} 
+.look-who-header { 
+padding: 25px 0; 
+font-size: 26px; 
+} 
+.delete-modal-content { 
+padding: 20px; 
+} 
+.delete-modal-buttons { 
+flex-direction: column; 
+} 
+.delete-modal-btn { 
+width: 100%; 
+} 
+} 
+/* ---------------- YOUR ORIGINAL STYLES BELOW ---------------- */ 
+:root { 
+--primary-color: #d32f2f; 
+--primary-light: #ff6659; 
+--primary-dark: #9a0007; 
+--secondary-color: #388e3c; 
+--secondary-light: #6abf69; 
+--secondary-dark: #00600f; 
+--background-color: #f5f5f5; 
+--surface-color: #ffffff; 
+--text-primary: #212121; 
+--text-secondary: #757575; 
+--divider-color: #bdbdbd; 
+--shadow: 0 2px 4px rgba(0,0,0,0.1); 
+--shadow-hover: 0 4px 8px rgba(0,0,0,0.15); 
+} 
+/* ---------- YOUR ORIGINAL CSS KEPT AS IS ---------- */ 
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; } 
+body { background-color: var(--background-color); color: var(--text-primary); line-height: 1.6; } 
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; } 
+header { display:none; } /* Hidden because landing page replaces it */ 
+/* ... (весь інший CSS залишився без змін) ... */ 
+</style> 
+</head> 
+<body> 
+<!-- ----------------- DELETE CONFIRMATION MODAL ------------------ --> 
+<div class="delete-modal" id="delete-modal"> 
+<div class="delete-modal-content"> 
+<div class="delete-modal-title">Delete Participant</div> 
+<div class="delete-modal-text">Are you sure, that you want to delete the participant?</div> 
+<div class="delete-modal-buttons"> 
+<button class="delete-modal-btn delete-modal-yes" id="delete-yes-btn">Yes</button> 
+<button class="delete-modal-btn delete-modal-no" id="delete-no-btn">No</button> 
+</div> 
+</div> 
+</div> 
+<!-- ----------------- NEW HEADER (ADDED) ------------------ --> 
+<header class="main-header"> 
+<!-- Логотип в лівій частині --> 
+<div class="logo"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/Logo%20(1).png" alt="Logo" width="187" height="28"> 
+</div> 
+</header> 
+<!-- ----------------- PARTICIPANT PAGE ----------------- --> 
+<section class="participant-page" id="participant-page"> 
+<!-- Decorations for participant page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat.png" class="app-flake app-f1"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(1).png" class="app-flake app-f2"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(2).png" class="app-flake app-f3"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(3).png" class="app-flake app-f4"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/firework.png" class="app-fw app-fw1"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/firework%20(1).png" class="app-fw app-fw2"> 
+<!-- New presents image for participant page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/presents.png" class="app-presents-img"> 
+<!-- New present image for participant page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/present.png" class="app-present-img"> 
+<!-- New snowglobe image for participant page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/snowglobe.png" class="app-snowglobe-img"> 
+<!-- MAIN CONTENT --> 
+<div class="participant-container"> 
+<!-- LEFT SIDE --> 
+<div class="participant-left"> 
+<!-- Secret Squad Card --> 
+<div class="squad-card"> 
+<!-- Ball decoration in top right corner --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/Ball%20Decor.png" class="squad-ball-decoration"> 
+<h2>Secret Squad</h2> 
+<p class="squad-desc"> 
+Hey everyone!<br> 
+Welcome to our Secret Nick gift exchange! Check the wishlist, see who's playing, and get ready for some holiday magic. Let's make this a festive and fun surprise! 
+</p> 
+<div class="info-boxes"> 
+<div class="info-box"> 
+<div class="info-title"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat.png" class="info-title-icon"> 
+Exchange Date 
+</div> 
+<span id="participant-exchange-date">06 Dec 2025</span> 
+</div> 
+<div class="info-box"> 
+<div class="info-title"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/presents.png" class="info-title-icon"> 
+Gift Budget 
+</div> 
+<span id="participant-gift-budget">1000 UAH</span> 
+</div> 
+</div> 
+</div> 
+<!-- Who's Playing --> 
+<div class="participant-card players-card"> 
+<!-- Vector decoration in top right corner --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/Vector.png" class="players-vector-decoration"> 
+<h2>Who's Playing? <span style="color:#555; font-size:16px;" id="players-count">10/20</span></h2> 
+<div class="player-row" data-player="Anastasiia Petrenko"> 
+Anastasiia Petrenko 
+<button class="delete-btn admin-only">Delete</button> 
+</div> 
+<div class="player-row" data-player="Kostiantyna Nechyporenko"> 
+Kostiantyna Nechyporenko 
+<button class="delete-btn admin-only">Delete</button> 
+</div> 
+<div class="player-row" id="current-user-row" data-player="Maria Shevchenko"> 
+Maria Shevchenko <span class="admin-label">Admin</span> 
+</div> 
+<div class="player-row" data-player="Mykyta Slivchuk"> 
+Mykyta Slivchuk 
+<button class="delete-btn admin-only">Delete</button> 
+</div> 
+<div class="player-row" data-player="Kateryna Moravska"> 
+Kateryna Moravska 
+<button class="delete-btn admin-only">Delete</button> 
+</div> 
+<div class="player-row" data-player="Ivan Moldvinenko"> 
+Ivan Moldvinenko 
+<button class="delete-btn admin-only">Delete</button> 
+</div> 
+<div class="player-row" data-player="Serhii Kovalenko"> 
+Serhii Kovalenko 
+<button class="delete-btn admin-only">Delete</button> 
+</div> 
+<div class="player-row" data-player="Valeria Solominka"> 
+Valeria Solominka 
+<button class="delete-btn admin-only">Delete</button> 
+</div> 
+<div class="player-row" data-player="Veronica Andriyenko"> 
+Veronica Andriyenko 
+<button class="delete-btn admin-only">Delete</button> 
+</div> 
+<div class="player-row" data-player="Ivan Kolodii"> 
+Ivan Kolodii 
+<button class="delete-btn admin-only">Delete</button> 
+</div> 
+</div> 
+</div> 
+<!-- RIGHT SIDE --> 
+<div class="participant-right"> 
+<!-- Participant card --> 
+<div class="participant-info-card"> 
+<!-- Decoration in top right corner of red rectangle --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(1).png" class="participant-info-decoration"> 
+<h3>Hi, <span id="participant-name">Maria</span></h3> 
+<p>Get ready for happy gift exchange and fun in Secret Nick game!</p> 
+<p>Your Participant Link</p> 
+<input type="text" id="participant-personal-link" value="https://secretnickswap.com/join/yourlink456" readonly /> 
+<div class="small-text">Do not share this link with other users</div> 
+<button class="button-outline" id="view-info-btn">View Information</button> 
+</div> 
+<!-- Look Who You Got Card --> 
+<div class="look-who-card" id="look-who-card"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/S.Nick.png" alt="Santa" class="look-who-santa-img"> 
+<div class="look-who-top-bg"></div> 
+<h1>Look Who You Got!</h1> 
+<p class="look-who-subtitle">You are a Secret Nick to</p> 
+<div class="look-who-name" id="look-who-name">Anastasiia Petrenko</div> 
+<button class="look-who-btn" id="look-who-btn">Read Details</button> 
+</div> 
+<!-- Draw Names Card (Admin only) --> 
+<div class="draw-names-card" id="draw-names-card"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/Gifts.png" alt="Gifts" class="draw-names-img"> 
+<div class="draw-names-top-bg"></div> 
+<h1>Let the Magic Begin!</h1> 
+<div class="draw-names-description">Don't forget to hit the button to<br>randomly pair everyone in the game.</div> 
+<button class="draw-names-btn" id="draw-names-btn">Draw Names</button> 
+</div> 
+<!-- Wishlist --> 
+<div class="participant-card wishlist-card"> 
+<h2> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/snowflake.png" class="wishlist-snowflake wishlist-snowflake-left"> 
+My Wishlist 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/snowflake.png" class="wishlist-snowflake wishlist-snowflake-right"> 
+</h2> 
+<div id="participant-wishlist-container"> 
+<!-- Wishlist items will be dynamically added here --> 
+</div> 
+<button class="button-green" id="view-wishlist-btn">View Wishlist</button> 
+</div> 
+</div> 
+</div> 
+</section> 
+<!-- ----------------- WISHLIST PAGE ----------------- --> 
+<section class="wishlist-page" id="wishlist-page"> 
+<!-- Decorations for wishlist page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat.png" class="app-flake app-f1"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(1).png" class="app-flake app-f2"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(2).png" class="app-flake app-f3"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(3).png" class="app-flake app-f4"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/firework.png" class="app-fw app-fw1"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/firework%20(1).png" class="app-fw app-fw2"> 
+<!-- New presents image for wishlist page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/presents.png" class="app-presents-img"> 
+<!-- New present image for wishlist page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/present.png" class="app-present-img"> 
+<!-- New snowglobe image for wishlist page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/snowglobe.png" class="app-snowglobe-img"> 
+<div class="wishlist-container"> 
+<!-- Decoration image in top left corner for wishlist page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/presents.png" class="wishlist-decoration"> 
+<h1> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/snowflake.png" class="wishlist-snowflake wishlist-snowflake-left"> 
+My Wishlist 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/snowflake.png" class="wishlist-snowflake wishlist-snowflake-right"> 
+</h1> 
+<div class="wishlist-items" id="wishlist-page-items"> 
+<!-- Wishlist items will be dynamically added here --> 
+</div> 
+<button class="back-button" id="back-to-participant-btn">Back to Room</button> 
+</div> 
+</section> 
+<!-- ----------------- PERSONAL INFO PAGE ----------------- --> 
+<section class="personal-info-page" id="personal-info-page"> 
+<!-- Decorations for personal info page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat.png" class="app-flake app-f1"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(1).png" class="app-flake app-f2"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(2).png" class="app-flake app-f3"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(3).png" class="app-flake app-f4"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/firework.png" class="app-fw app-fw1"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/firework%20(1).png" class="app-fw app-fw2"> 
+<!-- New presents image for personal info page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/presents.png" class="app-presents-img"> 
+<!-- New present image for personal info page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/present.png" class="app-present-img"> 
+<!-- New snowglobe image for personal info page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/snowglobe.png" class="app-snowglobe-img"> 
+<div class="personal-info-container"> 
+<!-- Decoration image in top left corner for personal info page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/car.png" class="personal-info-decoration"> 
+<div class="close-btn" id="close-info-btn">✕</div> 
+<!-- Текст "Personal Information" переміщений після зображення --> 
+<h1>Personal Information</h1> 
+<p class="personal-info-subtitle">Secret Nick needs to know where to send your present!</p> 
+<div class="info-box"> 
+<div class="grid"> 
+<!-- Перший стовбчик переміщений ближче до лівого краю --> 
+<div style="margin-right: 20px;"> 
+<div class="label">First name</div> 
+<div class="value" id="info-first-name">Anastasiia</div> 
+</div> 
+<div> 
+<div class="label">Last name</div> 
+<div class="value" id="info-last-name">Petrenko</div> 
+</div> 
+<div style="margin-right: 20px;"> 
+<div class="label">Phone number</div> 
+<div class="value" id="info-phone">+38 099 876 54 32</div> 
+</div> 
+<div> 
+<div class="label">Email</div> 
+<div class="value" id="info-email">anastasiiapetrenko@gmail.com</div> 
+</div> 
+<div style="grid-column: 1 / 3;"> 
+<div class="label">Delivery address</div> 
+<div class="value" id="info-address">Kyiv, NP #212</div> 
+</div> 
+</div> 
+</div> 
+</div> 
+</section> 
+<!-- ----------------- LOOK WHO YOU GOT PAGE ----------------- --> 
+<section class="look-who-page" id="look-who-page"> 
+<!-- Decorations for look who page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat.png" class="app-flake app-f1"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(1).png" class="app-flake app-f2"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(2).png" class="app-flake app-f3"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/flat%20(3).png" class="app-flake app-f4"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/firework.png" class="app-fw app-fw1"> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/firework%20(1).png" class="app-fw app-fw2"> 
+<!-- New presents image for look who page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/presents.png" class="app-presents-img"> 
+<!-- New present image for look who page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/present.png" class="app-present-img"> 
+<!-- New snowglobe image for look who page --> 
+<img src="https://raw.githubusercontent.com/KarinaR-Ch/MarathonEpam/refs/heads/main/src/loading%20page/snowglobe.png" class="app-snowglobe-img"> 
+<div class="look-who-header"> 
+Look Who You Got! 
+</div> 
+<div class="look-who-container"> 
+<div class="look-who-grid"> 
+<!-- PERSONAL INFORMATION --> 
+<div> 
+<h2>Personal Information</h2> 
+<div class="look-who-card-styled"> 
+<div class="snowflakes">❄️❄️</div> 
+<div class="field-title">First name</div> 
+<div class="field-value" id="look-who-first-name">Anastasiia</div> 
+<div class="field-title">Last name</div> 
+<div class="field-value" id="look-who-last-name">Petrenko</div> 
+<div class="field-title">Phone number</div> 
+<div class="field-value" id="look-who-phone">+38 099 876 54 32</div> 
+<div class="field-title">Email</div> 
+<div class="field-value" id="look-who-email">mariashevchenko@gmail.com</div> 
+<div class="field-title">Delivery address</div> 
+<div class="field-value" id="look-who-address">Kyiv, NP #212</div> 
+</div> 
+</div> 
+<!-- WISHLIST */ --> 
+<div> 
+<h2>Wishlist</h2> 
+<div class="wish-item-styled"> 
+<span>Candies</span> 
+<a href="https://himopt.com.ua/ua/shokoladnie-konfeti-ferrero-rocher-16-shtuk-200-g.html" target="_blank" class="link">Link</a> 
+</div> 
+<div class="wish-item-styled"> 
+<span>Christmass Candle</span> 
+</div> 
+<div class="wish-item-styled"> 
+<span>Harry Potter books</span> 
+<a href="https://www.britishbook.ua/detail/harry-potter-and-the-philosopher-s-stone_3/?gad_source=4&gad_campaignid=20286857922&gad_campaign=20286857922&gad_source=4&gclid=CjwKCAiAz_DIBhBJEiwAVH2XwEFA1_aSvs5EpDIW9r3R-szJSS2F1-PBlA367RkgqUxIJotBsUSOGxoCP1MQAvD_BwE" target="_blank" class="link">Link</a> 
+</div> 
+<div class="wish-item-styled"> 
+<span>Chocolate Bar</span> 
+</div> 
+<div class="wish-item-styled"> 
+<span>Puppy with little brown eyes and funny tail</span> 
+<a href="https://antoshka.ua/uk/pesik-chi-chi-love-pi-pi-pappi-5893460.html" target="_blank" class="link">Link</a> 
+</div> 
+</div> 
+</div> 
+<button class="btn" id="back-to-participant-from-look-who">Go Back to Room</button> 
+</div> 
+</section> 
+<!-- ----------------- NEW FOOTER (ADDED) ------------------ --> 
+<footer class="main-footer"> 
+<div class="footer-left">© 2025 EPAM Systems. All rights reserved.</div> 
+<div class="footer-right">Privacy Policy Privacy Notice</div> 
+</footer> 
+<script> 
+// List of players from Who's Playing section (excluding current user and admin) 
+const playersList = [ 
+"Kostiantyna Nechyporenko", 
+"Mykyta Slivchuk", 
+"Kateryna Moravska", 
+"Ivan Moldvinenko", 
+"Serhii Kovalenko", 
+"Valeria Solominka", 
+"Veronica Andriyenko", 
+"Ivan Kolodii" 
+]; 
+// Global variable to track admin status 
+let isAdmin = true; 
+// Variables for delete confirmation modal 
+let currentDeletePlayerRow = null; 
+let currentDeletePlayerName = ''; 
+// Function to show Look Who You Got card after 5 seconds 
+function showLookWhoCard() { 
+setTimeout(function() { 
+// Select a random player from the list 
+const randomIndex = Math.floor(Math.random() * playersList.length); 
+const assignedName = playersList[randomIndex]; 
+// Update the name in the card 
+document.getElementById('look-who-name').textContent = assignedName; 
+// Show the card 
+document.getElementById('look-who-card').style.display = 'block'; 
+}, 5000); 
+} 
+// Look Who You Got button handler 
+document.getElementById('look-who-btn').addEventListener('click', function() { 
+// Get the assigned person's name 
+const assignedName = document.getElementById('look-who-name').textContent; 
+// Update the look who page with the assigned person's name 
+document.getElementById('look-who-first-name').textContent = assignedName.split(' ')[0]; 
+document.getElementById('look-who-last-name').textContent = assignedName.split(' ')[1]; 
+// Hide current pages and show look who page 
+document.getElementById('participant-page').style.display = 'none'; 
+document.getElementById('wishlist-page').style.display = 'none'; 
+document.getElementById('personal-info-page').style.display = 'none'; 
+document.getElementById('look-who-page').style.display = 'block'; 
+}); 
+// Back button handler from look who page 
+document.getElementById('back-to-participant-from-look-who').addEventListener('click', function() { 
+// Hide look who page and show participant page 
+document.getElementById('look-who-page').style.display = 'none'; 
+document.getElementById('participant-page').style.display = 'block'; 
+}); 
+// Draw Names button handler 
+document.getElementById('draw-names-btn').addEventListener('click', function() { 
+// Select a random player from the list 
+const randomIndex = Math.floor(Math.random() * playersList.length); 
+const assignedName = playersList[randomIndex]; 
+// Update the name in the Look Who You Got card 
+document.getElementById('look-who-name').textContent = assignedName; 
+// Hide the Draw Names card and show the Look Who You Got card 
+document.getElementById('draw-names-card').style.display = 'none'; 
+document.getElementById('look-who-card').style.display = 'block'; 
+}); 
+// Delete player functionality with confirmation modal 
+document.addEventListener('click', function(e) { 
+if (e.target.classList.contains('delete-btn') && isAdmin) { 
+currentDeletePlayerRow = e.target.closest('.player-row'); 
+currentDeletePlayerName = currentDeletePlayerRow.getAttribute('data-player'); 
+// Show confirmation modal 
+document.getElementById('delete-modal').style.display = 'flex'; 
+} 
+}); 
+// Delete confirmation modal buttons 
+document.getElementById('delete-yes-btn').addEventListener('click', function() { 
+// Remove the player row 
+if (currentDeletePlayerRow) { 
+currentDeletePlayerRow.remove(); 
+// Update players count 
+updatePlayersCount(); 
+} 
+// Close the modal 
+document.getElementById('delete-modal').style.display = 'none'; 
+}); 
+document.getElementById('delete-no-btn').addEventListener('click', function() { 
+// Close the modal without deleting 
+document.getElementById('delete-modal').style.display = 'none'; 
+}); 
+// Function to update players count 
+function updatePlayersCount() { 
+const playerRows = document.querySelectorAll('.player-row'); 
+const countElement = document.getElementById('players-count'); 
+if (countElement) { 
+countElement.textContent = `${playerRows.length}/20`; 
+} 
+} 
+// View Information button handler - opens personal info page 
+document.getElementById('view-info-btn').addEventListener('click', function() { 
+// Hide current pages and show personal info page 
+document.getElementById('participant-page').style.display = 'none'; 
+document.getElementById('wishlist-page').style.display = 'none'; 
+document.getElementById('personal-info-page').style.display = 'block'; 
+document.getElementById('look-who-page').style.display = 'none'; 
+}); 
+// View Wishlist button handler - opens wishlist page 
+document.getElementById('view-wishlist-btn').addEventListener('click', function() { 
+// Hide current pages and show wishlist page 
+document.getElementById('participant-page').style.display = 'none'; 
+document.getElementById('wishlist-page').style.display = 'block'; 
+document.getElementById('personal-info-page').style.display = 'none'; 
+document.getElementById('look-who-page').style.display = 'none'; 
+}); 
+// Back to Participant button handler from wishlist 
+document.getElementById('back-to-participant-btn').addEventListener('click', function() { 
+// Hide wishlist page and show participant page 
+document.getElementById('wishlist-page').style.display = 'none'; 
+document.getElementById('participant-page').style.display = 'block'; 
+}); 
+// Close button handler for personal info page 
+document.getElementById('close-info-btn').addEventListener('click', function() { 
+// Hide personal info page and show participant page 
+document.getElementById('personal-info-page').style.display = 'none'; 
+document.getElementById('participant-page').style.display = 'block'; 
+}); 
+// Initialize the page 
+document.addEventListener('DOMContentLoaded', function() { 
+// Show admin elements 
+document.querySelectorAll('.admin-only').forEach(btn => { 
+btn.style.display = 'block'; 
+}); 
+}); 
+</script> 
+</body> 
+</html>
