@@ -1309,6 +1309,134 @@
             // Show Look Who You Got card after 5 seconds
             showLookWhoCard();
         });
+        // Function to load form data from localStorage
+function loadFormData() {
+    const savedData = localStorage.getItem('secretNickFormData');
+    if (savedData) {
+        const formData = JSON.parse(savedData);
+        
+        // Update room information
+        if (formData.exchangeDate) {
+            const dateObj = new Date(formData.exchangeDate);
+            const displayDate = dateObj.toLocaleDateString('en-GB', { 
+                day: 'numeric', 
+                month: 'short', 
+                year: 'numeric' 
+            });
+            document.getElementById('participant-exchange-date').textContent = displayDate;
+        }
+        
+        if (formData.giftBudget) {
+            document.getElementById('participant-gift-budget').textContent = formData.giftBudget + ' UAH';
+        }
+        
+        // Update personal information
+        if (formData.firstName) {
+            document.getElementById('participant-name').textContent = formData.firstName;
+            document.getElementById('info-first-name').textContent = formData.firstName;
+            document.getElementById('look-who-first-name').textContent = formData.firstName;
+        }
+        
+        if (formData.lastName) {
+            document.getElementById('info-last-name').textContent = formData.lastName;
+            document.getElementById('look-who-last-name').textContent = formData.lastName;
+            
+            // Update current user name in Who's Playing section
+            const currentUserRow = document.getElementById('current-user-row');
+            if (formData.firstName && formData.lastName) {
+                currentUserRow.innerHTML = `${formData.firstName} ${formData.lastName} <span class="you-label">You</span>`;
+            }
+        }
+        
+        if (formData.phone) {
+            const formattedPhone = '+38 0' + formData.phone.replace(/\D/g, '').replace(/(\d{2})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4');
+            document.getElementById('info-phone').textContent = formattedPhone;
+            document.getElementById('look-who-phone').textContent = formattedPhone;
+        }
+        
+        if (formData.email) {
+            document.getElementById('info-email').textContent = formData.email;
+            document.getElementById('look-who-email').textContent = formData.email;
+        }
+        
+        if (formData.address) {
+            document.getElementById('info-address').textContent = formData.address;
+            document.getElementById('look-who-address').textContent = formData.address;
+        }
+        
+        // Update wishlist
+        if (formData.wishlist && formData.wishlist.length > 0) {
+            updateWishlistDisplay(formData.wishlist);
+        }
+    }
+}
+
+// Function to update wishlist display
+function updateWishlistDisplay(wishlistData) {
+    // Update participant wishlist
+    const participantWishlistContainer = document.getElementById('participant-wishlist-container');
+    participantWishlistContainer.innerHTML = '';
+    
+    wishlistData.forEach((wish, index) => {
+        const wishRow = document.createElement('div');
+        wishRow.className = 'wish-row';
+        const displayName = wish.name.length > 30 ? wish.name.substring(0, 30) + '...' : wish.name;
+        wishRow.innerHTML = `
+            ${displayName}
+            ${wish.link ? `<span class="wish-link" data-link="${wish.link}">Link</span>` : ''}
+        `;
+        participantWishlistContainer.appendChild(wishRow);
+    });
+    
+    // Update wishlist page items
+    const wishlistPageContainer = document.getElementById('wishlist-page-items');
+    wishlistPageContainer.innerHTML = '';
+    
+    wishlistData.forEach((wish, index) => {
+        const wishlistItem = document.createElement('div');
+        wishlistItem.className = 'wishlist-item';
+        wishlistItem.innerHTML = `
+            <h3>${wish.name}</h3>
+            ${wish.link ? `<a href="${wish.link}" target="_blank" class="wishlist-item-link">View Product Link</a>` : '<p>No link provided</p>'}
+        `;
+        wishlistPageContainer.appendChild(wishlistItem);
+    });
+    
+    // Update look who page wishlist
+    const lookWhoWishlistContainer = document.querySelector('.look-who-grid > div:last-child');
+    if (lookWhoWishlistContainer) {
+        lookWhoWishlistContainer.innerHTML = '<h2>Wishlist</h2>';
+        
+        wishlistData.forEach((wish, index) => {
+            const wishItem = document.createElement('div');
+            wishItem.className = 'wish-item-styled';
+            wishItem.innerHTML = `
+                <span>${wish.name}</span>
+                ${wish.link ? `<a href="${wish.link}" target="_blank" class="link">Link</a>` : ''}
+            `;
+            lookWhoWishlistContainer.appendChild(wishItem);
+        });
+    }
+}
+
+// Add click handlers for wish links
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('wish-link')) {
+        const link = e.target.getAttribute('data-link');
+        if (link) {
+            window.open(link, '_blank');
+        }
+    }
+});
+
+// Update the initialization to load form data
+document.addEventListener('DOMContentLoaded', function() {
+    // Load form data from localStorage
+    loadFormData();
+    
+    // Show Look Who You Got card after 5 seconds
+    showLookWhoCard();
+});
     </script>
 </body>
 </html>
