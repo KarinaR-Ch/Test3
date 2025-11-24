@@ -855,7 +855,7 @@ I want a surprise gift
 <div class="section"> 
 <label>Your Room Link</label> 
 <div class="copy-input-wrapper"> 
-<input type="text" class="input" id="room-link" value="https://secretnickswap.com/join/abc123" readonly> 
+<input type="text" class="input" id="room-link" value="https://karinar-ch.github.io/Test3/room2.html" readonly> 
 <button class="copy-btn" data-target="room-link"> 
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> 
 <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/> 
@@ -872,7 +872,7 @@ Hey!<br><br>
 Join our Secret Nick and make this holiday season magical! 🎄<br> 
 You'll get to surprise someone with a gift — and receive one too. 🎁✨<br><br> 
 🔗 Join here:<br> 
-https://secretnickswap.com/join/abc123 
+https://karinar-ch.github.io/Test3/room2.html 
 </div> 
 </div> 
 <!-- Personal Participant Link --> 
@@ -882,7 +882,7 @@ https://secretnickswap.com/join/abc123
 This is your unique personal link to access the Secret Nick room. 
 </p> 
 <div class="copy-input-wrapper"> 
-<input type="text" class="input" id="personal-link" value="https://secretnickswap.com/join/yourlink456" readonly> 
+<input type="text" class="input" id="personal-link" value="https://karinar-ch.github.io/Test3/room1.html" readonly> 
 <button class="copy-btn" data-target="personal-link"> 
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> 
 <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/> 
@@ -1119,15 +1119,12 @@ if (this.classList.contains('active')) {
 collectWishlistData(); 
 // Collect personal info data 
 collectPersonalInfoData(); 
-// Generate unique room code 
-const roomCode = Math.random().toString(36).substring(2, 8).toUpperCase(); 
-const personalCode = Math.random().toString(36).substring(2, 10).toUpperCase(); 
-// Update links with generated codes 
-document.getElementById('room-link').value = `https://secretnickswap.com/join/${roomCode}`; 
-document.getElementById('personal-link').value = `https://secretnickswap.com/join/${personalCode}`; 
+// Set fixed URLs as requested 
+document.getElementById('room-link').value = 'https://karinar-ch.github.io/Test3/room2.html'; 
+document.getElementById('personal-link').value = 'https://karinar-ch.github.io/Test3/room1.html'; 
 // Update invitation note with actual room link 
 const noteBox = document.querySelector('.note-box'); 
-noteBox.innerHTML = noteBox.innerHTML.replace('abc123', roomCode); 
+noteBox.innerHTML = noteBox.innerHTML.replace('abc123', 'https://karinar-ch.github.io/Test3/room2.html'); 
 // Hide step 3 content 
 document.getElementById('step3-content').style.display = 'none'; 
 // Show step 4 content 
@@ -1157,7 +1154,7 @@ const adminPasswordError = document.getElementById('admin-password-error');
 if (adminPassword === '1111') { 
 // Password is correct - navigate to room2.html as admin 
 isAdmin = true; 
-window.location.href = 'room2.html'; 
+window.location.href = 'https://karinar-ch.github.io/Test3/room2.html'; 
 } else { 
 // Password is incorrect - show error 
 adminPasswordError.style.display = 'block'; 
@@ -1166,7 +1163,7 @@ adminPasswordError.style.display = 'block';
 
 // Visit Room button handler - opens room1.html for regular user 
 document.getElementById('visit-room-btn').addEventListener('click', function() { 
-window.location.href = 'room1.html'; 
+window.location.href = 'https://karinar-ch.github.io/Test3/room1.html'; 
 }); 
 
 // Copy button functionality 
