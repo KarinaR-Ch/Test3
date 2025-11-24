@@ -1506,6 +1506,45 @@ document.querySelectorAll('.admin-only').forEach(btn => {
 btn.style.display = 'block'; 
 }); 
 }); 
+  // Function to load form data from localStorage (for admin page)
+function loadFormData() {
+    const savedData = localStorage.getItem('secretNickFormData');
+    if (savedData) {
+        const formData = JSON.parse(savedData);
+        
+        // Update room information
+        if (formData.exchangeDate) {
+            const dateObj = new Date(formData.exchangeDate);
+            const displayDate = dateObj.toLocaleDateString('en-GB', { 
+                day: 'numeric', 
+                month: 'short', 
+                year: 'numeric' 
+            });
+            document.getElementById('participant-exchange-date').textContent = displayDate;
+        }
+        
+        if (formData.giftBudget) {
+            document.getElementById('participant-gift-budget').textContent = formData.giftBudget + ' UAH';
+        }
+        
+        // Update personal information
+        if (formData.firstName) {
+            document.getElementById('participant-name').textContent = formData.firstName;
+        }
+        
+        // Update current user name in Who's Playing section for admin
+        const currentUserRow = document.getElementById('current-user-row');
+        if (formData.firstName && formData.lastName) {
+            currentUserRow.innerHTML = `${formData.firstName} ${formData.lastName} <span class="admin-label">Admin</span>`;
+        }
+    }
+}
+
+// Update the initialization to load form data
+document.addEventListener('DOMContentLoaded', function() {
+    // Load form data from localStorage
+    loadFormData();
+});
 </script> 
 </body> 
 </html>
