@@ -1238,6 +1238,81 @@ document.getElementById('step2-content').style.display = 'block';
 document.getElementById('step3').classList.remove('active'); 
 document.getElementById('step2').classList.add('active'); 
 }); 
+  // Function to save form data to localStorage
+function saveFormData() {
+    const formData = {
+        roomName: document.getElementById('room-name').value,
+        roomDescription: document.getElementById('room-description').value,
+        exchangeDate: document.getElementById('exchange-date').value,
+        giftBudget: document.getElementById('gift-budget').value,
+        firstName: document.getElementById('first-name').value,
+        lastName: document.getElementById('last-name').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        address: document.getElementById('address').value,
+        wishlist: wishlistData
+    };
+    
+    localStorage.setItem('secretNickFormData', JSON.stringify(formData));
+}
+
+// Function to update links with actual GitHub Pages URLs
+function updateLinksWithGitHubPages() {
+    // Update personal link to room1.html
+    document.getElementById('personal-link').value = 'https://karinar-ch.github.io/Test3/room1.html';
+    
+    // Update room link for admin to room2.html
+    document.getElementById('room-link').value = 'https://karinar-ch.github.io/Test3/room2.html';
+    
+    // Update invitation note
+    const noteBox = document.querySelector('.note-box');
+    noteBox.innerHTML = noteBox.innerHTML.replace('abc123', 'room2.html');
+}
+
+// Modify the complete button handler to save data and update links
+completeBtn.addEventListener('click', function() {
+    if (this.classList.contains('active')) {
+        // Collect wishlist data
+        collectWishlistData();
+        // Collect personal info data
+        collectPersonalInfoData();
+        
+        // Save all form data to localStorage
+        saveFormData();
+        
+        // Update links with GitHub Pages URLs
+        updateLinksWithGitHubPages();
+        
+        // Hide step 3 content
+        document.getElementById('step3-content').style.display = 'none';
+        // Show step 4 content
+        document.getElementById('step4-content').style.display = 'block';
+        // Hide progress steps on step 4
+        document.getElementById('progress-steps').style.display = 'none';
+    }
+});
+
+// Modify the Visit Room button to save data before navigation
+document.getElementById('visit-room-btn').addEventListener('click', function() {
+    // Save data one more time before navigation
+    saveFormData();
+    // Navigate to room1.html
+    window.location.href = 'room1.html';
+});
+
+// Modify the admin password submit to save data before navigation
+document.getElementById('admin-password-btn').addEventListener('click', function() {
+    const adminPassword = document.getElementById('admin-password').value;
+    const adminPasswordError = document.getElementById('admin-password-error');
+    if (adminPassword === '1111') {
+        // Password is correct - save data and navigate to room2.html as admin
+        saveFormData();
+        window.location.href = 'room2.html';
+    } else {
+        // Password is incorrect - show error
+        adminPasswordError.style.display = 'block';
+    }
+});
 </script> 
 </body> 
 </html>
